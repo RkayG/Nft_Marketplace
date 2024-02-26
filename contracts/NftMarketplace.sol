@@ -2,23 +2,14 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract NFTMarketplace is ERC721 {
-    using Counters for Counters.Counter;
-
     // Counter for generating unique token IDs
-    Counters.Counter private _nftIdCounter;
+    uint256 private _nftIdCounter;
 
     mapping(uint256 => uint256) private _nftPrices;
-
-    // Mapping from Nft ID to seller's address
     mapping(uint256 => address) private _nftSellers;
-
-    // Mapping from Nft ID to buyer's address
     mapping(uint256 => address) private _nftBuyers;
-
-    // Admin address with special privileges
     address private _admin;
 
     // Event for when a token is listed for sale
@@ -38,9 +29,9 @@ contract NFTMarketplace is ERC721 {
 
     // Mint a new NFT
     function mintNFT(address _to) external onlyAdmin returns (uint256) {
-        uint256 newNftId = _nftIdCounter.current();
+        uint256 newNftId = _nftIdCounter;
         _safeMint(_to, newNftId);
-        _nftIdCounter.increment();
+        _nftIdCounter++;
         return newNftId;
     }
 
